@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TypewriterEffect : MonoBehaviour
 {
-    public Text textComponent;                  // Reference to the Text component on the canvas
+    public TextMeshProUGUI textComponent;       // Reference to the Text component on the canvas
+
+    [TextArea(3,20)]
     public string textToType;                   // The text to be typed
-    public float typingSpeed = 0.05f;           // The speed of typing in seconds
-    private Coroutine typingCoroutine;         // Reference to the typing coroutine
+
+    public float typingSpeed = 0.08f;           // The speed of typing in seconds
+    private Coroutine typingCoroutine;          // Reference to the typing coroutine
 
     void Start()
     {
@@ -24,9 +28,29 @@ public class TypewriterEffect : MonoBehaviour
 
         for (int i = 0; i < textToType.Length; i++)
         {
+            Debug.Log(i);
+            bool isLetter = true;
             textComponent.text += textToType[i];  // Add the next character to the textComponent
-            if (textToType[i].Equals(",")) typingSpeedThisCharacter *= 1.5f;
-            if (textToType[i].Equals(".")) typingSpeedThisCharacter *= 2.0f;
+
+            switch(textToType[i].ToString())
+            {
+                case " ":
+                    typingSpeedThisCharacter *= 0.7f;
+                    isLetter = false;
+                    break;
+                case ",":
+                    typingSpeedThisCharacter *= 1.6f;
+                    isLetter = false;
+                    break;
+                case ".":
+                    typingSpeedThisCharacter = 0.8f;
+                    isLetter = false;
+                    break;
+            }
+            if (isLetter)
+            {
+                typingSpeedThisCharacter = typingSpeed;
+            }
             yield return new WaitForSeconds(typingSpeedThisCharacter);  // Wait for typingSpeed seconds before typing the next character
         }
 
