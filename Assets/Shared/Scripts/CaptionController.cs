@@ -45,7 +45,7 @@ public class CaptionController : MonoBehaviour
 
     private void SetCaptionInactive()
     {
-        if (keepPastCaptions && captionIndex != 0)
+        if (!keepPastCaptions && captionIndex != 0)
         {
             captionImage[captionIndex - 1].gameObject.SetActive(false);
         }
